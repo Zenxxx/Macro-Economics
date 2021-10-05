@@ -1,0 +1,120 @@
+\documentclass[dvipdfmx,a4paper, 12pt]{article}
+\usepackage{wrapfig, blindtext}
+\usepackage{amsmath,amssymb,graphicx} %load extra symbols and environments
+\usepackage[margin=1in]{geometry} %set margins
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{autobreak}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{url}
+\usepackage{tcolorbox}
+\usepackage{bm}
+\usepackage{breqn}
+\usepackage{here}
+\usepackage{ascmac}
+\usepackage{empheq}
+\usepackage{setspace}
+\usepackage{here}
+\usepackage{mathrsfs}
+\usepackage{mathrsfs}
+\usepackage{bbm}
+
+\hyphenpenalty=10000\relax
+\exhyphenpenalty=10000\relax
+\sloppy
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
+
+\allowdisplaybreaks[4]
+\tcbuselibrary{breakable, skins, theorems}
+
+\newtcbtheorem{definition1}{Definition}{enhanced,
+attach boxed title to top left = {xshift=5mm,yshift=-3mm},
+boxed title style = {colframe = blue!35!black, colback = white},
+coltitle = black,
+colback = white,
+colframe = blue!35!black,
+fonttitle = \bfseries,
+breakable = true,
+top = 4mm
+}{korehatheorem1}
+
+\newtcbtheorem{theorem2}{Theorem}{enhanced,
+attach boxed title to top left = {xshift=5mm,yshift=-3mm},
+boxed title style = {colframe = green!35!black, colback = white},
+coltitle = black,
+colback = white,
+colframe = green!35!black,
+fonttitle = \bfseries,
+breakable = true,
+top = 4mm
+}{korehatheorem2}
+
+\newtcbtheorem{proof3}{Proof}{enhanced,
+attach boxed title to top left = {xshift=5mm,yshift=-3mm},
+boxed title style = {colframe = black!35!black, colback = white},
+coltitle = black,
+colback = white,
+colframe = black!35!black,
+fonttitle = \bfseries,
+breakable = true,
+top = 4mm
+}{korehatheorem3}
+
+\begin{document}
+
+\setlength{\abovedisplayskip}{1pt}
+\setlength{\belowdisplayskip}{1pt}
+
+\onehalfspacing
+
+\title{マクロ経済学}
+\author{}
+\date{}
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\begin{Introduction}
+ここでは大学一年生レベルのマクロ経済学(GDPなど基本的なことからIS-LMモデルまで)についていろいろ書き連ねていくよ。事実だけをポンポン投げてくスタイルじゃなくて計算したりグラフを積極的に使っていくよ。数学的な記述が多いと思うけど数式とかで理解したほうが意味は分かりづらいかもしれないけど問題解く時に役に立つからたくさん使っていくよ。
+
+そもそもあんまり日本語を書かないし、経済は決して得意な方じゃないから誤植とか間違いがあったら教えてね。
+
+\newpage
+
+\section{マクロ経済で重要な3変数}
+\subsection{国内総生産(GDP)}
+GDPはその名の通り1年間に自国で生み出された価値の総額だよ。これはつまり国の豊かさを表してるってことになるね。GDPの測定方法としては下の三つがあるけどどれも最終的に値が一致するように計算されるから好きな方法で求めることができるよ。
+\subsubsection{生産法}
+生産法は市場に出回ってなおかつ直接消費される財の合計だよ。計算式だと
+\begin{equation*}
+    GDP=\sum_i p_iq_i
+\end{equation*}
+ここで$p_i$は財$i$の価格、$q_i$は財$i$の数量を表すよ。市場価格が適用されない財について:
+
+\quad $\cdot$ 政府のサービスなどについては補完が行われるよ
+
+\quad $\cdot$ 家事などは補完が行われないよ
+
+この補完が行われるかどうかによって大きくGDPが変わってしまうことがあるよ。例えばA国では子供を保育園に預けて母親は仕事をする事が一般的でB国では子供を母親が一日中面倒を見るっていうことになると子供の面倒を見ることはGDPに価値として補完されないからA国のGDPだけが上がることになるね。
+
+生産法では直接消費される財だけが計算式に含まれるよ。例えばパン屋さんが市場に出回っている小麦粉を買ってそれを使ってパンを生産したとするとこの小麦粉の値段はGDPの値には含まれないよ。
+
+生産法を少し改良したものとして付加価値法があるよ。これはさっきのパン屋さんの例で言うと生産法だと最終的に生産されたパンの値段をGDPにするけど付加価値法では小麦粉の値段とパン屋さんの仕事にやって生み出された価値を足し合わせるよ。
+
+\subsubsection{所得法}
+\subsubsection{支出法}
+
+\subsection{インフレ率}
+\subsection{失業率}
+\end{document}
