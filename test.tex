@@ -1,6 +1,7 @@
-\documentclass[dvipdfmx,a4paper, 12pt]{article}
+\documentclass[a4paper, 12pt]{article}
+\usepackage[dvipdfmx]{hyperref,graphicx}
 \usepackage{wrapfig, blindtext}
-\usepackage{amsmath,amssymb,graphicx} %load extra symbols and environments
+\usepackage{amsmath,amssymb} %load extra symbols and environments
 \usepackage[margin=1in]{geometry} %set margins
 \usepackage{enumerate}
 \usepackage{mathtools}
@@ -14,12 +15,18 @@
 \usepackage{here}
 \usepackage{ascmac}
 \usepackage{empheq}
-\usepackage{setspace}
 \usepackage{here}
-\usepackage{mathrsfs}
-\usepackage{mathrsfs}
-\usepackage{bbm}
-\usepackage{eurosym}
+\usepackage{pxjahyper}
+\usepackage[doublespacing]{setspace}
+
+\hypersetup{
+setpagesize=false,
+ bookmarksnumbered=true,%
+ bookmarksopen=true,%
+ colorlinks=true,%
+ linkcolor=black,
+ citecolor=black,
+}
 
 \hyphenpenalty=10000\relax
 \exhyphenpenalty=10000\relax
@@ -28,9 +35,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\N}{\mathbb{N}}
-\newcommand{\Q}{\mathbb{Q}}
 \newcommand{\C}{\mathbb{C}}
-\newcommand{\T}{\mathbb{T}}
 
 \allowdisplaybreaks[4]
 \tcbuselibrary{breakable, skins, theorems}
@@ -46,7 +51,7 @@ breakable = true,
 top = 4mm
 }{korehatheorem1}
 
-\newtcbtheorem{theorem2}{Theorem}{enhanced,
+\newtcbtheorem{law2}{Theorem}{enhanced,
 attach boxed title to top left = {xshift=5mm,yshift=-3mm},
 boxed title style = {colframe = green!35!black, colback = white},
 coltitle = black,
@@ -86,10 +91,15 @@ top = 4mm
 
 \newpage
 
-\begin{Introduction}
+\section{あいさつ}
 ここでは大学一年生レベルのマクロ経済学(GDPなど基本的なことからIS-LMモデルまで)についていろいろ書き連ねていくよ。事実だけをポンポン投げてくスタイルじゃなくて計算したりグラフを積極的に使っていくよ。数学的な記述が多いと思うけど数式とかで理解したほうが意味は分かりづらいかもしれないけど問題解く時に役に立つからたくさん使っていくよ。最初の方は文字がいっぱい書いてあるけど分析を始めていくと数学とグラフをたくさん使うようになるよ。
 
-そもそもあんまり日本語を書かないし、経済は決して得意な方じゃないから誤植とか間違いがあったら教えてね。
+そもそもあんまり日本語を書かないし、経済は決して得意な方じゃないから誤植とか間違いがあったら教えてね。それとこのpdfはダウンロードしたり共有したり加工したりは全部自由だよ。
+
+毎日頑張って1セクションは書いていくつもりだよ。
+
+なんかあったらDMちょうだいね。
+Twitter: @Zenxdx
 
 \newpage
 
@@ -169,12 +179,1647 @@ GDP=従業員の所得+資本所得+混合所得+税で表せるよ。
 今、USAのGDPを$GDP_{USA}=\$10000$、日本のGDPを$GDP_{JP}=\text{Y\llap{=}}500000$とするよ。
 \begin{enumerate}
   \item まず架空通貨、インターナショナルドル(I\$)を導入するよ。
-  \item 次にUSAの財とサービスが少しずつ入っている1\$の「塊」を用意するよ。(つまりこの塊を10000個買えばUSAの国内総生産と一致する)。この「塊」はI\$1で買えるものとするよ。
+  \item 次にUSAの1\$のバスケットを用意するよ。(つまりこのバスケットを10000個買えばUSAの国内総生産と一致する)。このバスケットはI\$1で買えるものとするよ。
   \item すでに$GDP_{USA}=\$10000=\text{I\$}10000$ということがわかるね。
-  \item さっき作った「塊」を日本で買おうとしたらいくらになるかを算出するよ。(これは外生的なものだから計算方法とかはないよ)
-  \item 今、この「塊」がY\llap{=}130すると仮定するとI\$1=Y\llap{=}130だから$GDP_{JP}=\text{Y\llap{=}}500000\approx \text{I\$}=3846$ってことがわかってこれで比較ができるようになったね。
+  \item さっき作ったバスケットを日本で買おうとしたらいくらになるかを算出するよ。(これは外生的なものだから計算方法とかはないよ)
+  \item 今、このバスケットがY\llap{=}130すると仮定するとI\$1=Y\llap{=}130だから$GDP_{JP}$=Y\llap{=}500000 $\approx$ I\$3846ってことがわかってこれで比較ができるようになったね。
 \end{enumerate}
 
+\newpage
+
 \subsection{インフレ率}
+インフレ率($\pi$)は価格指数($P$)の上昇率だよ。計算式はとっても簡単だよ。
+\begin{equation*}
+  \pi_t=\frac{P_t-P_{t-1}}{P_{t-1}}
+\end{equation*}
+価格指数は主に求め方があって一つをGDPデフレーター、もう一つを消費者物価指数(CPI)っていうよ。
+\begin{enumerate}
+  \item GDPデフレーターは以下の計算式で求まるよ。
+  \begin{equation*}
+    P_t=\frac{P_tY_t}{Y_t}=\frac{\sum_i p_{i,t}q_{i,t}}{\sum_i p_{i,0}q_{i,t}}
+  \end{equation*}
+  価格指数は名目GDPを実質GDPで割った値になるね。
+
+  また、上の式からこんなことも言えるよ
+  \begin{equation*}
+    \Delta P_tY_t = \Delta Y_t + \pi
+  \end{equation*}
+  これは名目GDPの成長率は実質GDPの成長率とインフレ率の和で求まるってことを言ってるよ。(この式が成立する理由は変化率の近似の章を見てね(最後のページにあるよ。))
+  \item 消費者物価指数はまず事前調査で一般的な家庭がどんな財を消費するかを調べるよ。それらの財の時刻$t$での価格を$t-1$での価格で割ることで求まるよ。
+  \begin{equation*}
+    P_t=\frac{\sum_i p_{i,t}q_{i,0}}{\sum_i p_{i,0}q_{i,0}}
+  \end{equation*}
+  もちろん価格の違いだけを知りたいから数量は固定するよ。
+\end{enumerate}
+
+  輸入品と輸出品の価格の違いは消費者物価指数とGDPデフレーターに別々の影響を与えるよ。
+  \begin{enumerate}
+    \item 自国で生産されてない輸入品の値段の高騰は消費者物価指数にはすぐに反映されるけどGDPデフレーターには直接的な影響はないよ。
+    \item 自国で消費されない輸出品の価格はGDPデフレーターにはすぐに反映されるけどCPIには影響がないよ。
+  \end{enumerate}
+
+  通常、GDPデフレーターは消費者物価指数よりも実際のインフレ率と強い相関があるよ。これは以下のような制限が消費者物価指数にあるからなんだよ。
+  \begin{enumerate}
+    \item もし財の値段が高騰した時に家庭が代替財を買うことを考慮してないよ
+    \item 値段が変わったのはインフレーションのせいじゃなくて品質が向上したという理由かもしれないよ
+  \end{enumerate}
+
+\newpage
+
 \subsection{失業率}
+まず以下のように記号を用意するよ。
+\begin{enumerate}
+  \item $E$を仕事がある人口
+  \item $U$を仕事が欲しいけど仕事がない人
+  \item 仕事がいらなくて仕事がない人はどちらにも所属しないよ
+\end{enumerate}
+このとき、
+\begin{displaymath}
+  \begin{array}{l}
+    \text{労働力}(L)=E+U \\
+    \text{失業率}(u)=\frac{U}{L}\\
+    \text{参加率}(p)=\frac{L}{\text{働く年齢の人口}}\\
+    \text{雇用率}(e)=\frac{E}{\text{働く年齢の人口}}
+  \end{array}
+\end{displaymath}
+
+\newpage
+
+まず一つ単語を定義するよ。
+バスケットはいろいろな財とサービスがつまったものとするよ。この概念を導入する意味として通貨は価値が変わってしまうけれどバスケットは価値としては一緒になるよ。だからインフレを無視して話を進めることができるよ。
+\section{閉鎖経済の循環フローモデル}
+ここからは閉鎖経済(貿易取引が一切ない)を仮定し循環フローモデルについて話していくよ。$Y$は外生的(与えられているもの)として財市場における均衡について調べていくよ。
+\subsection{金利}
+\subsubsection{名目金利}
+名目金利($i$)っていうのは僕たちがよく目にする金利のことだよ。
+時刻$t$の時に1円預けて時刻$t+1$において$1+i_t$円返ってくるこの$i_t$が名目金利だよ。
+\subsubsection{実質金利}
+実質金利($r$)とは名目金利から物価変動率を差し引いたものだよ。
+
+お金を預けている間にお金の価値が変わっちゃうことってよくあるよね。こうやってお金が変わっちゃうと預金による実質的なリターンは減ったり増えたりしちゃうからそれを考慮したものが実質金利だよ。
+
+考え方としては1つバスケットを時刻$t$に預けたら時刻$t+1$に$1+r_t$バスケットになって返ってくるこの$r_t$が実質金利だよ。
+\subsubsection{$i$と$r$の関係}
+時刻$t$で一つのバスケットが$P_t$円するとすると時刻$t+1$では$P_t(1+i_t)$円だから$\displaystyle \frac{P_t(1+i_t)}{P_{t+1}}$個のバスケットが返ってくるね。
+よって、
+\begin{equation*}
+  1+r_t=\frac{P_t(1+i_t)}{P_{t+1}}=\frac{1+i_t}{1+\pi_{t+1}} \approx 1+i_t-\pi_{t+1}
+\end{equation*}
+\begin{equation*}
+  \Rightarrow r_t=i_t-\pi_{t+1}
+\end{equation*}
+って感じになるね。要するに実質金利は名目金利から時刻$t+1$のインフレ率を差し引いたものだよ。
+\subsection{モデル}
+この閉鎖経済循環フローモデルでは財市場の均衡について長期の視点で見ていくよ。そのために以下のようなことに留意するよ。
+
+閉鎖経済
+\begin{equation*}
+  NX=0
+\end{equation*}
+財市場の均衡条件
+\begin{equation*}
+  Y=C+I+G
+\end{equation*}
+$Y$は外生的(長期)でいつも同じ値をとるとするよ。
+\begin{equation*}
+  Y=\overline{Y}
+\end{equation*}
+
+\vskip\baselineskip
+
+\subsubsection{計画支出}
+計画支出は$C+I+G$のことだよ。
+$C$は以下の式で与えられていると仮定するよ
+\begin{equation*}
+  C=\overline{C}+c(Y-T) \ \ (0<c<1)
+\end{equation*}
+ここで$\overline{C}$は自立消費、$c$は限界消費性向、$Y-T$は可処分所得っていうよ。もう少し詳しく言うと自立消費とは外生的パラメーターでこれは消費者満足度とかによって上下するよ。限界消費性向は所得が上がったときにどれくらい消費が増えるかを表していて可処分所得は総所得から税金を差し引いたもの、つまり消費者の手取りだよ。
+
+\vskip\baselineskip
+
+$I$は以下の式で与えられているよ。
+\begin{equation*}
+  I=\overline{I}-br \ \ (b>0)
+\end{equation*}
+ここで$I$は基礎投資で景況感とかによって上下するよ。(企業が景気がいいと思えば基礎投資が上がるし、悪ければ下がるよ。)
+
+\vskip\baselineskip
+
+$G,T$は外生的なものとするよ。つまり、
+\begin{displaymath}
+  \begin{array}{l}
+    G=\overline{G}\\
+    T=\overline{T}
+  \end{array}
+\end{displaymath}
+$G$と$T$の値は財政政策によって決まるよ。計画支出が増えるような政策を拡張的財政政策、計画支出が減る政策を緊縮的財政政策っていうよ。
+
+政府の収入源は$T$、支出は$G$だから$G=T$なら均衡予算っていうよ。
+
+\subsubsection{均衡条件}
+モデルは以下を仮定するよ
+\begin{displaymath}
+  \begin{array}{l}
+    Y=\overline{Y}\\
+    C=\overline{C}+c(Y-T)\\
+    I=\overline{I}-br\\
+    F=\overline{G}\\
+    T=\overline{T}
+  \end{array}
+\end{displaymath}
+
+次に$r$がどうやってふるまうかを考えるよ。
+\begin{displaymath}
+  \begin{array}{c}
+    \text{財市場の均衡}\\
+    \Updownarrow \\
+    Y=C+I+G \\
+    \Updownarrow \\
+    Y-C-G=I\\
+    \Updownarrow \\
+    S=I\\
+    \Updownarrow \\
+    \text{貸付資金の供給} = \text{貸付資金の需要}\\
+    \Updownarrow \\
+    \text{貸付資金市場の均衡}
+  \end{array}
+\end{displaymath}
+このことから$r$は貸付資金市場が均衡になるように来ますっていうことがわかるね。ここで$S$は貯蓄を表すよ。つまり、GDPから消費と政府支出を差し引いた額、それが$I$と同地になるよ。貸付資金市場っていうのは貯蓄をする人と投資をしたい人が出入りする市場だよ。貯蓄が増えればそれだけ投資として回せるお金が増えるから投資も増えるよ。
+
+貸付資金の供給は
+\begin{equation*}
+  S=Y-C-G=\overline{Y}-\overline{C}-c(\overline{Y}-\overline{T})-\overline{G} =\overline{S}
+\end{equation*}
+となって外生的なパラメーターであることがわかるね。
+
+需要は
+\begin{equation*}
+  I=\overline{I}-br
+\end{equation*}
+だから連立方程式を以下のように組むことができるね。
+\begin{displaymath}
+  \left\{\begin{array}{l}
+    I=\overline{S}\\
+    I=\overline{I}-br
+  \end{array}\right.
+\end{displaymath}
+このグラフを書くとこうなるね。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{S-I.jpg}
+\caption{投資曲線}
+\label{}
+\end{center}
+\end{figure}
+もし財市場が不均衡な状態だった場合、$r$の増減により経済が均衡になるよ。実際、財市場が超過需要の場合、
+\begin{displaymath}
+  \begin{array}{c}
+    \overline{Y}<\overline{C}+c(Y-\overline{T})+\overline{I}-br+\overline{G}\\
+    \Updownarrow \\
+    \overline{S}<\overline{I}-br \\
+    \Updownarrow \\
+    r \text{が貸付資金市場の均衡まで上がるから財市場でも均衡になるよ。}
+  \end{array}
+\end{displaymath}
+もし財市場が超過需要なら$r$は下がるよ。
+
+\subsection{分析}
+今、初期条件として経済は均衡なものだと考えるよ。
+\begin{displaymath}
+  \begin{array}{c}
+    \overline{Y}=\overline{C}+c(Y-\overline{T})+\overline{I}-br+\overline{G}\\
+    \Updownarrow \\
+    \overline{S}=\overline{I}-br
+  \end{array}
+\end{displaymath}
+
+\subsubsection{$\overline{G}$の増加}
+今、$\overline{G}$、政府支出が増えるとするよ。そうするとその影響をいかのように説明できるね。
+\begin{itemize}
+  \item 財市場における超過需要
+  \item $\overline{G}$が上がると$\overline{S}$が下がるから貸付資金市場における超過需要で$S$曲線が左にシフトするね。$S$曲線が左にシフトすると$r$が上がるね。
+  \item $r$が上がると$I$は減るよ。この関係はグラフから見て取れるね。$\overline{C}$を増加、$\overline{T}$を減少させた場合でも同じようなことが言えるよ。
+  \item 拡張的財政政策はクラウディングアウトを引き起こすよ。クラウディングアウトは$G$を上げたり$T$を下げたりすると政府は不足分のお金を補うために国債を発行するんだけど国債を発行すると金利が上がってしまって投資が減ってしまうんだ。
+\end{itemize}
+グラフはこんな感じになるね
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.14]{IG.jpg}
+\caption{投資曲線}
+\label{}
+\end{center}
+\end{figure}
+\subsubsection{$\overline{I}$の増加}
+次に$\overline{I}$が増加した場合を考えるよ。
+\begin{itemize}
+  \item 財市場における超過需要
+  \item $\overline{I}$が上がると貸付資金市場が超過需要になって投資曲線が右(上)にシフトするね。まぁ、グラフの一次関数の切片の値が大きくなるから当たり前だよね。投資曲線が右にシフトすると均衡点が変わるから$r$が上がるね。
+  \item この場合、$I$は変わらないよ。
+\end{itemize}
+グラフはこんな感じになるね
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.14]{II.jpg}
+\caption{投資曲線}
+\label{}
+\end{center}
+\end{figure}
+
+\newpage
+
+\section{小国開放経済の循環フローモデル}
+\subsection{為替レート}
+通貨の価値の増減に対して英語ではappreciation, depreciationという言葉があるんだけど日本語だと直訳にあたる単語がないからここからは自国を日本、相手国をアメリカとするよ。
+\subsubsection{名目為替レート}
+名目為替レート($e$)はある通貨に対する相対的な価格のことだよ。これは自国通貨一単位分払って外国通貨がいくら買えるかを表すよ。例えば日本円とアメリカドルを考えた時に、Y\llap{=}1=\$ $e$となるような$e$を考えてるってことだよ。もちろんこの$e$はどちらの通貨を基準に考えるか、通貨ごとに違うから注意が必要だよ。
+\subsubsection{実質為替レート}
+実質為替レート($\varepsilon$)とは自国の1単位のバスケットに対して相手国の$\varepsilon$単位のバスケットが等価である時に使われるよ。これは交易条件とも言って1単位の輸出品に対しての輸入品の交換比率という意味だよ。日本から1単位の車を輸出したとしてそれと交換にアメリカから1トンの牛肉が輸入できるとしたらその数量的な交換比率が交易条件だよ。
+\subsubsection{$e$と$\varepsilon$の関係}
+自国の1バスケットがY\llap{=}$P$だとすると$US$では\$ $Pe$になるから向こうでは $\displaystyle \frac{Pe}{P^*}$単位のバスケットとなるね。このことから、
+\begin{equation*}
+  \varepsilon = \frac{Pe}{P^*}
+\end{equation*}
+となることがわかるね。つまり、実質為替レートと名目為替レートは正比例するよ。
+
+$e,\varepsilon$が増加することを円高、$e,\varepsilon$が減少することを円安というよ。
+\subsection{モデル}
+小国開放経済では二つのことを仮定するよ。
+\begin{enumerate}
+  \item 小国が世界金利$r^*$に与える影響は無視できるものとするよ。この$r^*$は外生的だよ。
+  \item 資本の完全移動性を仮定することか国内の金利$r$は世界金利$r^*$と一致するよ。
+\end{enumerate}
+ここで資本の完全移動性というのは取引手数料などをかけずに為替が行えたりすることだよ。
+
+開放経済における均衡条件は
+\begin{equation*}
+  Y=C+I+G+NX
+\end{equation*}
+長期だと$Y$は外生的で$Y=\overline{Y}$とするよ
+\subsubsection{計画支出}
+計画支出は$C+I+G+NX$に等しいよ。ここで$NX$は以下で定義されるとするよ
+\begin{equation*}
+  NX=\overline{NX}-d\varepsilon \ \ (d>0)
+\end{equation*}
+ここで$\overline{NX}$は基礎貿易収支で外生的だよ。貿易に課される貿易政策によって上下するよ。この式から$\varepsilon$が増加するつまり円高になると貿易収支が減るよ。これは考えたら割と自然で、円高ということは外国はより多くのお金を払って日本の商品を買い入れないといけないから販売するときにも高くしなきゃいけなくてあんまり売れなくなるから買い入れなくなるよ。また逆に輸入は少ない円でもっと外国の製品を買えるようになるから輸入は増えるよ。これによって$NX=\text{輸出}-\text{輸入}$だから$NX$が減少することがわかるね。
+\subsubsection{均衡条件}
+\begin{displaymath}
+  \begin{array}{c}
+    \text{財市場の均衡}\\
+    \Updownarrow \\
+    Y=C+I+G+NX \\
+    \Updownarrow \\
+    Y-I=NX\\
+    \Updownarrow \\
+    S=I\\
+    \Updownarrow \\
+      \text{海外への投資に伴う外貨需要} = \text{国際貿易で得た外貨供給}\\
+    \Updownarrow \\
+    \text{外国為替市場の均衡}
+  \end{array}
+\end{displaymath}
+ここで$S-I$は貯蓄から投資を差し引いたものだからそのお金を海外への投資に使うという考えは自然だね。(この資本が海外に移動するのを資本流出ともいうよ)
+
+外国為替市場での外国通貨の需要(または自国通貨の供給は)
+\begin{equation*}
+  S-I=Y-C-G-I=\overline{Y}-\overline{C}-c(\overline{Y}-\overline{T})-\overline{G}-\overline{I}+br^*=\overline{S}-(\overline{I}-br^*)
+\end{equation*}
+外国通貨の供給(または自国通貨の需要は)
+\begin{equation*}
+  NX=\overline{NX}-d\varepsilon
+\end{equation*}
+よって均衡条件は
+\begin{displaymath}
+  \left\{\begin{array}{l}
+    NX=\overline{S}-(\overline{I}-br^*)\\
+    NX=\overline{NX}-d\varepsilon
+  \end{array}\right.
+\end{displaymath}
+グラフを書くとこんな感じになるね。グラフの形は閉鎖経済の時とすごい似てるよ。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{NX.jpg}
+\caption{貿易曲線}
+\label{}
+\end{center}
+\end{figure}
+今、財市場が超過需要だとすると
+\begin{equation*}
+  \overline{Y}<\overline{C}+c(\overline{Y}-\overline{T})+\overline{G}+\overline{I}-br^*\overline{NX}-d\varepsilon
+\end{equation*}
+となり、外国為替市場の超過供給となるから
+\begin{equation*}
+  \overline{S}-(\overline{I}-br^*)<\overline{NX}-d\varepsilon
+\end{equation*}
+よって$\varepsilon$は外国為替市場、財市場が均衡になるまで上がり続けるよ。
+\subsection{分析}
+今、初期条件として経済は均衡なものだと考えるよ。
+\begin{displaymath}
+  \begin{array}{c}
+    \overline{Y}=\overline{C}+c(Y-\overline{T})+\overline{I}-br+\overline{G}+\overline{NX}=d\varepsilon\\
+    \Updownarrow \\
+    \overline{S}-(\overline{I}-br^*)=\overline{NX}=d\varepsilon
+  \end{array}
+\end{displaymath}
+
+\subsubsection{$\overline{G}$の増加}
+今、$\overline{G}$が増加したものとするよ。
+\begin{itemize}
+  \item 財市場における超過需要
+  \item $\overline{G}$が上がると$\overline{S}-(\overline{I}-br^*)$が減少するから外国為替市場における超過供給で$S-I$曲線が左にシフトするね。$S-I$曲線が左にシフトすると$\varepsilon$が上がるよ。
+  \item $\varepsilon$が上がると$NX$は減るよ。この関係はグラフから見て取れるね。$\overline{C}$を増加、$\overline{T}$を減少、$\overline{I}$を増加$r*$を減少させた場合でも同じようなことが言えるよ。
+  \item 財政政策は双子の赤字(twin deficit)と言って政府収支と貿易収支の両方が赤字になってしまう可能性があるよ。こうした経済は長く続かないことが知られているよ。
+\end{itemize}
+グラフはこんな感じになるね
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.14]{NXG.jpg}
+\caption{$\overline{G}$が増加した時の貿易曲線}
+\label{}
+\end{center}
+\end{figure}
+
+\subsubsection{$\overline{NX}$の増加}
+今、$\overline{NX}$が増加したものとするよ。
+\begin{itemize}
+  \item 財市場における超過需要
+  \item $\overline{NX}$が上っても$\overline{S}-(\overline{I}-br^*)$は変化しないよ。その代わり$NX=\overline{NX}-d\varepsilon$が増加するから右(上に)シフトするよ。これによって$\varepsilon$が増加するよ。
+  \item $\overline{NX}$は増加しても$\varepsilon$が上がったから$NX$は変わらないよ。この関係はグラフから見て取れるね。
+  \item この政策は輸出産業に対して打撃を与えるよ。
+\end{itemize}
+グラフはこんな感じになるね
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.14]{NXI.jpg}
+\caption{$\overline{I}$が増加した時の貿易曲線}
+\label{}
+\end{center}
+\end{figure}
+
+\newpage
+
+\section{通貨制度}
+\subsection{通貨とは}
+お金は流動性の高い金融資産だよ。
+お金は主に以下の役割があるよ。
+\begin{itemize}
+  \item 交換の際に用いられる仲介物
+  \item 勘定科目(会社の取引による資産・負債・資本の増減、および費用・収益の発生について、その性質をわかりやすく記録するために必要な分類項目の総称)
+  \item 価値の保存(肉は保存しておいたら腐ってしまうがお金は腐らない(お金は価値が変わってしまうが....))
+\end{itemize}
+お金にもいろいろあって流動性によって以下のように分けられるよ
+\begin{displaymath}
+  \begin{array}{l}
+    C=\text{キャッシュ(紙幣と硬貨)}\\
+    M_1=C+\text{要求払預金}\\
+    M_2=M_1+\text{普通預金}
+  \end{array}
+\end{displaymath}
+ここで要求払預金っていうのはデビットカードのようにそれを使ってお金を払うと即座に口座から引き落とされるようなタイプの預金だよ。普通預金はその名の通りお金を入れると利子がついたりするものだよ。要求払預金はキャッシュよりは流動性が劣る(デビットカード決済を受け付けてない店もあるかも)し普通預金に入ってるお金を直接店で使うことはできないから一回おろしてこなきゃいけないからこれもまた劣るね。
+
+キャッシュの供給は政府によって独占されているよ。その証拠にお金を勝手に刷ったら犯罪だよね。この仕事は政府の子会社である中央銀行に一任されているよ。
+\subsection{通貨制度における民間銀行の役割}
+民間銀行は三つやることがあるよ。
+一つは僕たちからキャッシュを受け取って要求払預金口座にお金を振り込むことだよ。二つ目は民間銀行は一定のお金を中央銀行にある口座に預けておかなきゃいけないんだ。を日銀当座預金というよ。ここに入ってるキャッシュは世の中には出回らないよ。最後に民間銀行はお金を借りたい人たちにお金を貸すことができるよ。
+
+民間銀行はお金を信用創造する権利があるよ。信用創造のプロセスを説明していくね。
+
+まず初めに$C=1000$を今Aさんが持っているとするよ。今は$C=1000, R=0, D=0, M_1=1000$だね。
+Aさんが銀行1に$C=1000$を預けたら銀行1はAさんの通帳に1000という数字を書くよ。銀行1は受け取ったお金の20\%を日銀当座預金へ、残りの80\%をほかの人に貸し出すとするよ。そうすると$C=800, R=200, D=1000, M_1=1800$
+となるね。こうやって引き続き経済にある$C$を銀行へ、そのうちの20\%を日銀当座預金へというステップを続けると$C=0,R=1000,D=5000,M_1=5000$となるね。
+ここで$D=5000$というのは等差数列の無限和からわかるね。
+\begin{equation*}
+  M_1=\sum_{n=0}^{\infty}1000 \times 0.8^n=\frac{1000}{1-0.8}=5000
+\end{equation*}
+理論的に$C$が0になることはないけど銀行は信用創造によって乗数効果によってお金が増えるよ。この例だとつまり中央銀行が1000円を市場に供給した場合、結果として5倍になることがわかるね。
+\subsection{中央銀行とマネーサプライ}
+中央銀行のバランスシートはこんな感じだよ。
+\begin{table}[h]
+ \caption{中央銀行のバランスシート}
+ \label{table:Balance Sheet}
+ \centering
+  \begin{tabular}{cc}
+   \hline
+   資産 & 負債 \\
+   \hline
+   有価証券 & キャッシュ($C$) \\
+   民間銀行へのローン & 日銀当座預金($R$)  \\
+   \hline
+  \end{tabular}
+\end{table}
+有価証券は主に国債だよ。中央銀行が民間銀行から国債を買ったり売ったりすることで金利を変化させることができるよ。ここで言う民間銀行へのローンとは中央銀行は民間銀行が倒産しそうなときに唯一お金を貸し出してあげることができる存在なのでお金を貸し出しているとしたらそれに対する利息付きの金額が資産となるよ。
+
+ここでマネタリーベースという概念を導入してみるよ。
+\begin{definition1}{マネタリーベース}{tag}
+  マネタリーベース($B$)=キャッシュ($C$)+日銀当座預金($R$)
+\end{definition1}
+要するにマネタリーベースっていうのはこの世にある現金すべての合計だよ。
+
+マネーの供給は以下の連立方程式を解いてみるよ
+\begin{displaymath}
+  \begin{array}{c}
+    \displaystyle M_1=C+D \\
+    \displaystyle B=C+R\\
+    \displaystyle \Downarrow \\
+    \displaystyle \frac{M_1}{B}=\frac{C+D}{C+R}=\frac{cr+1}{cr+rr}\equiv m\\
+    \displaystyle \Downarrow \\
+    \displaystyle M_1=mB
+  \end{array}
+\end{displaymath}
+ここで$m$はマネーに対する乗数指数、$\displaystyle cr=\frac{C}{D}$, $\displaystyle rr=\frac{R}{D}$だよ。
+\vskip\baselineskip
+$B$は金融政策によって決まるよ。つまり中央銀行が経済をどうしたいのかによって変えられるよ。ほとんど常に以下の同値関係が成り立つよ。$m>1 \Leftrightarrow M_1>B$
+
+\paragraph{金融政策の手段}
+\begin{enumerate}
+  \item 公開市場操作
+    \begin{itemize}
+      \item 拡張的金融政策
+        \begin{itemize}
+          \item 中央銀行が国債を買い取るよ
+          \item 中央銀行は買い取るのに$C$か$R$を使うから結果として$B \uparrow$
+        \end{itemize}
+      \item 緊縮的金融政策
+        \begin{itemize}
+          \item 中央銀行が国債を売るよ
+          \item 中央銀行は売ると$C$か$R$を受け取るから結果として$B \downarrow$
+        \end{itemize}
+    \end{itemize}
+  \item 民間銀行へのローン
+    \begin{itemize}
+      \item 中央銀行は民間銀行にお金を貸すことができるよ。お金を貸すともちろん$B$が増えるね。
+    \end{itemize}
+  \item 準備金と利子率の変更
+    \begin{itemize}
+      \item 準備金(民間銀行が中央銀行に預けておかなきゃいけない額)を変更させることで$B$が変わるよ。(準備金を増やせば$B$も増える。)
+      \item 市場利子率を決めることはできないけど民間銀行が日銀に預けているお金に関してはその利子率を変えることができるよ。銀行にもっとお金を貸し出してほしいときには金利を下げるよ。よく聞くマイナス金利とかは私たちの銀行予期人に対する金利ではなくて日銀が民間銀行にもっとお金を使ってねーという意味でマイナス金利にしているんだよ。
+    \end{itemize}
+\end{enumerate}
+\newpage
+
+\section{インフレーション}
+\subsection{フィッシャーの交換方程式}
+交換方程式とは以下の式のことだよ
+\begin{equation*}
+  MV=PY
+\end{equation*}
+ここで$M$は貨幣供給量、$V$は貨幣の取引流通速度、$P$は物価、$Y$は実質GDPだよ。もちろん$PY$は一塊として名目GDPとみることができるよ。これは$V$のための定義式で常に成り立つよ。
+
+$1/V$は経済主体が名目GDPに対してどれだけのお金を持つかを表すよ:
+\begin{equation*}
+  \frac{1}{V}=\frac{M}{PY}
+\end{equation*}
+また、$M/P$は実質貨幣供給量と言って価格指数を入れることで支払い能力を示すよ。
+\subsection{古典派の二分法}
+古典派の二分法っていうのは実質変数と名目変数はそれぞれ独立に分析することができるというものだよ。これは貨幣の中立説という考え方に使われていて貨幣量の増減は価格指数には関係ある(どっちも名目変数だから)が生産量や雇用量には一切関係ないっていう考え方だよ。
+
+古典派の二分法により以下のようなことが言えるよ
+\begin{enumerate}
+  \item 貨幣数量説
+
+  長期では$Y$が外生的、$V$は定数と考えるよ。ならばフィッシャーの交換方程式の変化率は
+  \begin{equation*}
+    \frac{\Delta M}{M}=\frac{\Delta P}{P}+\frac{\Delta Y}{Y}
+  \end{equation*}
+  と表すことができるね。ここで$Y$の変化率は与えられているものとするからインフレ率を決める要因は金融政策であるっていうことが言えるよ。
+
+  \item フィッシャー効果
+
+  名目金利と実質金利には以下の関係があったね。
+  \begin{equation*}
+    r_t=i_t-\pi_{t+1}
+  \end{equation*}
+  でもこれには$\pi_{t+1}$を時刻$t$に知ることができないっていうデメリットがあったね。古典派の二分法が簡単なら$r$は$\pi$の影響を受けないはずだから$\pi_{t+1}$の変化と同じ変化が$i_t$にも現れるということがいえるよ。
+
+  \item 長期における$\pi$と$e$の関係
+
+  $\varepsilon$と$e$にはこんな関係があるよ
+  \begin{displaymath}
+    \begin{array}{c}
+      \displaystyle \varepsilon = \frac{Pe}{P^*}\\
+      \Downarrow \\
+      \displaystyle \frac{\Delta e}{e} =\frac{\Delta \varepsilon}{\varepsilon}+\frac{\Delta P^*}{P^*}-\frac{\Delta P}{P}
+    \end{array}
+  \end{displaymath}
+  これは以下のように変形することができるね。
+  \begin{equation*}
+    \frac{\Delta e}{e} =\frac{\Delta \varepsilon}{\varepsilon}+\pi^*-\pi
+  \end{equation*}
+  ここで$\pi^*$は相手国での価格上昇率(インフレ率)、$\pi$は自国のインフレ率を表すよ。
+
+  長期において$\varepsilon$が定数ならば国内のインフレ率が上昇すると、名目為替レートは同じ割合で下落することがわかるね。
+\end{enumerate}
+\subsection{シニョリッジ}
+政府は以下の三つの方法で政府支出を行うことができるよ。
+\begin{enumerate}
+  \item 増税
+  \item 国債の発行
+  \item お金を刷る$\rightarrow$ シニョリッジ
+\end{enumerate}
+つまりシニョリッジとはお金を刷ることで得られる利益のことだよ。具体的には刷ったお金から製造コストを差し引いた金額になるよ。
+
+でも長期では$M \uparrow \Rightarrow P \uparrow$だからインフレーションが起きてしまって貨幣価値が下がるよ。これは次項で説明するハイパーインフレーションを引き起こしてしまう可能性があるよ。
+\subsection{ハイパーインフレーション}
+ハイパーインフレーションとは月々50\%以上のインフレ率を超えることと定義されているよ。
+
+お金は信頼の上にその価値が保証されているからハイパーインフレーションによって価値としての保存、仲介物としての使用、指標としての使い方など本来の役割を失ってしまうよ。
+
+そして最終的には経済崩壊となってしまうよ。
+
+\newpage
+
+\section{失業}
+古典派経済では労働投入量は外生的で自然失業率によるとされているよ
+
+\subsection{自然失業率のモデル}
+\begin{definition1}{自然失業率}{tag}
+自然失業率($(u_n)$)とは景気の動向やインフレなどに左右されることなく、労働人口において存在している失業者の割合のことだよ。
+\end{definition1}
+
+\textcolor{red}{Examples}\par
+$\cdot$ U.S.: \ $u_n \approx 5-6$\% \par
+$\cdot$ ヨーロッパ: \ 1970年代中盤まで$u_n \approx 2-3$\%。 1980年からは$u_n \approx 8-10$\%
+\par
+$\cdot$ 日本: \ 1990年序盤まで$u_n \approx 2$\%。 それからは$u_n \approx 4$\%
+\vskip\baselineskip
+\noindent
+仮定として:
+\begin{enumerate}
+  \item  労働力は外生的なものとするよ
+\begin{equation*}
+L_t = \overline{L}
+\end{equation*}
+
+ここで$L_t = E_t + U_t$
+
+\item $s$という一定数の割合で人々は職を失うよ。
+
+$f$という一定数の割合で人々は職を得るよ。
+
+\item $s$を離職率、$f$を就職率というよ.
+
+\item 長期では$s$と$f$が定数だと仮定するよ。
+\end{enumerate}
+\vskip\baselineskip
+\noindent
+失業者数の変化は以下の式で導出できるよ。
+\begin{equation*}
+\Delta U_{t+1} = sE_t - fU_t = s(\overline{L}-U_t)-fU_t = s\overline{L}-(s+f)U_t
+\end{equation*}
+\noindent
+ここで失業率の変化は
+\begin{equation*}
+\Delta u_{t+1} = s-(s+f)u_t=(s+f)\left(\frac{s}{s+f}-u_t\right)
+\end{equation*}
+\noindent
+ならば以下の条件式が成り立つよ。
+\begin{displaymath}
+\left\{
+\begin{array}{l}
+u_t < \frac{s}{s+f} \Leftrightarrow \Delta u_{t+1} > 0 \\
+u_t = \frac{s}{s+f} \Leftrightarrow \Delta u_{t+1} = 0 \\
+u_t > \frac{s}{s+f} \Leftrightarrow \Delta u_{t+1} < 0
+\end{array}
+\right.
+\end{displaymath}
+$\Rightarrow$ 長期では$u$は$\displaystyle \frac{s}{s+f}$に収束するよ。
+もし $\displaystyle u=\frac{s}{s+f}$ならば$u$は定数となるよ。
+\vskip\baselineskip
+\noindent
+\textcolor{blue}{結論:
+\begin{enumerate}
+  \item 自然失業率($u_n$)は $\displaystyle
+  \frac{s}{s+f}$と同値だよ。
+  \item 長期ならば$u$は$u_n$に収束するよ。
+\end{enumerate}}
+\vskip\baselineskip
+\noindent
+\textcolor{green}{備考:}
+\begin{enumerate}
+  \item 労働市場について考えるときに重要になるよ。
+  \item でも仮定や予測が不足して正しくないこともよくあるよ。
+
+  \ 雇用法の厳格化(高い退職金等) が $u_n$:に与える影響
+
+\ \ $s \downarrow$だけじゃなくて$f
+\downarrow \ \Rightarrow \ u_n \uparrow$ または $u_n \downarrow$?
+
+  \ テクノロジー発達による$u_n$への影響:
+
+	\ \ $f \uparrow$だけじゃなくて$s \uparrow \ \Rightarrow \ u_n \uparrow$
+	または $u_n \downarrow$? ,$\rightarrow$ (創造的破壊)
+\end{enumerate}
+$\Rightarrow$ 労働市場の分析には政府政策や法律などの事情も考えなければいけない。
+
+\subsection{職探し $\Rightarrow$ 摩擦的失業}
+$\cdot$ 職探しには時間がかかるよ
+
+\ \ 労働者が持つスキルはそれぞれ違うし
+\noindent
+
+\ \ 違う職種は違うスキルや経験を要する
+
+\noindent
+$\Rightarrow$摩擦的失業
+\vskip\baselineskip
+\noindent
+公共制度:
+
+1) は以下のように摩擦的失業者を減らすことができるよ。
+
+\qquad $\cdot$ 職業紹介所を設ける
+
+\qquad $\cdot$ 再研修プログラム
+
+2) は以下のように摩擦的失業者を増やすこともできるよ
+
+\qquad $\cdot$ 失業手当を増やす。
+\subsection{実質賃金硬直性 $\Rightarrow$ 構造的失業}
+\begin{definition1}{実質賃金}{tag}
+実質賃金 $\displaystyle \frac{W}{P}$ とは名目賃金 $W$ を購買力で表したものだよ
+\end{definition1}
+\noindent
+仮定として
+\begin{enumerate}
+  \item  労働供給 $\displaystyle L^s$は $\displaystyle
+  \frac{W}{P}$に依らないよ。
+  \item 労働需要 $\displaystyle L^d$ は
+  $\displaystyle \frac{W}{P}$の減少関数として表せられるよ。
+\end{enumerate}
+\noindent
+もしも $L^d < L^s$ならば賃金は労働市場の均衡点に行かないよ。
+
+$\Rightarrow$ 実質賃金の硬直性(実質賃金の硬直性っていうのは最低賃金が法律によってきめられているからどれだけ労働供給が多くとも価格変動が起きない、つまりモデルが不均衡になってしまうという状態を指すよ。)
+
+$\Rightarrow$ 構造的失業 (構造的失業っていうのは用主が労働者に求める技能や学歴、年齢、性別、勤務地といった特性と、失業中の労働者の持つ特性がずれることによって生じる失業のっことだよ。)
+\vskip\baselineskip
+\noindent
+実質賃金硬直性の要因
+\begin{enumerate}
+  \item 最低賃金
+ \item 集団的賃金交渉
+
+ $\cdot$ 労働者と雇用主の間の交渉
+
+\item Efficiency wage theories.
+
+$\cdot$ 高実質賃金 $\Rightarrow$ 高生産性
+
+$\cdot$ 例:
+
+\quad $\cdot$ 労働者が健康的
+
+\quad $\cdot$  退職が少なくなる(技術の流出が防げる)
+
+\quad $\cdot$  労働者の質が上がる
+
+\quad $\cdot$  仕事にもっと力を入れるようになるね
+
+\end{enumerate}
+
+
+\newpage
+\section{新古典派の景気循環}
+総生産$Y$ は資本、労働力、それと科学技術によって以下の式で書けるよ
+\begin{equation*}
+Y = F(K, L)
+\end{equation*}
+
+\quad ここで$Y$は実質GDP
+
+\quad $K$ = 総資本
+
+\quad $L$ = 労働投入量
+
+\quad $F$ は科学技術の発展状態を表すよ
+\vskip\baselineskip
+古典派は
+
+\quad $\cdot$ $K, L$,科学技術と$Y$は外生的なものとする。
+
+\quad $\cdot$ 数年の経過を観察するのには有効
+
+\vskip\baselineskip
+\noindent
+古典派は暗に長期経済では均衡な状態にあると仮定するよ。
+\begin{definition1}{総需要の自然レベル}{tag}
+ 総生産の自然レベル $(Y_n)$ とは経済が長期における均衡である状態になる総生産のこと
+\end{definition1}
+\vskip\baselineskip
+\noindent
+$Y_n$の成長率は資本、人口と科学技術の発展によるよ
+\begin{equation*}
+\frac{\Delta Y_{n,t+1}}{Y_{n,t}}=\frac{Y_{n,t+1}-Y_{n,t}}{Y_{n,t}}
+\end{equation*}
+\vskip\baselineskip
+\noindent
+短期では:
+
+\quad $\cdot$ $Y$の$Y_n$まわりでの激しい変動.
+
+\quad $\cdot$ $u$の$u_n$まわりでの激しい変動
+
+以下の間には相関があるよ
+
+\quad $\cdot$ 総生産
+
+\quad $\cdot$ 消費と投資
+
+\quad $\cdot$ 失業率
+
+$\Rightarrow$ 景気循環の変動(拡大と後退)
+\vskip\baselineskip
+\noindent
+\begin{law2}{オークンの法則}{tag}
+\begin{equation*}
+\frac{\Delta Y_{t+1}}{Y_{t}} \approx \frac{Y_{n,t+1}}{Y_{n,t}}-2\Delta u_{t+1}
+\end{equation*}
+\end{law2}
+\noindent
+新古典派の景気循環モデルは
+
+$\cdot$ ケインズに基づいているよ
+
+\quad $\cdot$ 短期では総生産は古典派のように供給側のみならず需要側(計画支出、アニマルスプリット(消費者、生産者満足度)、実質金利)にもよるよ。
+
+\quad $\cdot$ 短期では名目価格は硬直性を持っているとしてインフレーションは起きないものとするよ(これはつまり名目金利と実質金利の変化は直接反映されるよ。)
+
+\quad $\Rightarrow$ 短期では計画支出はアニマルスプリットと実質金利によるとしてそれにより総生産もこれらに依るよ。
+
+\begin{enumerate}
+  \item ケインズモデルの構成:
+  \quad \begin{enumerate}
+    \item 45度線モデル:
+
+    \qquad $i$が与えられているときに$Y$が財市場でどのようにふるまうかについて分析するよ。
+
+	\item 流動性選好モデル:
+
+	\qquad $Y$が与えられているときに貨幣市場で$i$がどのようにふるまうかについて分析するよ。
+  \end{enumerate}
+  \item IS-LMモデル:
+
+  $\cdot$ 45度線モデルと流動性選好モデルを組み合わせたものだよ。
+
+  $\cdot$ $\pi = 0$を仮定したときにどのように$Y$と$i$が財市場、貨幣市場両方において均衡になるかを分析するよ。
+
+$\cdot$ 閉鎖経済についてのみ分析するよ。
+  \item マンデル-フレミングモデル:
+
+  $\cdot$ IS-LMと似ているけど小国開放経済を仮定するよ。
+  \item AD-ASモデル:
+
+  $\cdot$ IS-LMにおいて$P$が変わった場合の影響について分析するよ。
+
+  $\cdot$ 短期における新古典派の経済循環モデル($\pi = 0$)と長期における古典派経済(古典派の二分法)の関係
+
+ $\cdot$ $u$ と $\pi $の関係$\Rightarrow$ フィリップス曲線
+
+ $\cdot$ 不安定 $\Rightarrow$ ルーカスの批判
+ \end{enumerate}
+
+\newpage
+\section{45度線分析}
+\subsection{モデル}
+このモデルは閉鎖経済における短期のモデルだよ。
+
+$\cdot$ 閉鎖経済を仮定するよ:
+\begin{equation*}
+NX=0
+\end{equation*}
+$\cdot$ 閉鎖経済における財市場の均衡条件:
+\begin{equation*}
+Y=C+I+G
+\end{equation*}
+$\cdot$ 財市場に重点を置く$\Rightarrow i$ は外生的
+
+$\cdot$ 短期 $\Rightarrow P$は外生的で$\pi =0$を仮定
+\vskip\baselineskip
+\noindent
+計画支出を$E$で表す:
+\begin{equation*}
+E=C+I+G
+\end{equation*}
+
+仮定:
+\begin{displaymath}
+\left\{
+\begin{array}{l}
+C=\overline{C}+c(Y-\overline{T}) \ (0<c<1)\\
+I = \overline{I}-br \ (b>0) \\
+G=\overline{G} \\
+T=\overline{T} \\
+\end{array}
+\right.
+\end{displaymath}
+
+\begin{equation*}
+\left.\begin{matrix}
+    i \text{は外生的}\\
+    \pi = 0
+\end{matrix} \right \} \Rightarrow r=i \text{は外生的}
+\end{equation*}
+
+\quad 財市場は以下の時に均衡になるよ
+\begin{displaymath}
+\begin{array}{c}
+Y=E \\
+\Downarrow \\
+\left\{ \begin{matrix}
+	E=\overline{C}+c(Y-\overline{T})+\overline{I}-bi+\overline{G} \\
+	Y=E
+\end{matrix}\right.
+\end{array}
+\end{displaymath}
+
+メモ:
+
+$\cdot$ $Y$ が増加するにつれて $E$ も増加するが$Y$よりも小さい割合で
+
+$\cdot$ もし財市場が均衡ならば $Y$ と$E$は同値
+\subsection{分析}
+経済が均衡だと仮定するよ:
+\begin{equation*}
+Y=\overline{C}+c(Y-\overline{T})+\overline{I}-bi+\overline{G}
+\end{equation*}
+4つの違う状況に対しての分析をする。
+\subsubsection{政府支出の変動}
+$\overline{G}$ が増加したとするよ:
+
+\quad $\cdot$ $\overline{G}$が増加するにつれて$E$が増加するね。
+
+\qquad $\cdot$ $E$-曲線が上方向にシフトするね。
+
+\qquad $\cdot$ 財市場における超過需要
+
+\quad $\Rightarrow Y$ が増加
+\vskip\baselineskip
+\quad $Y$が増加すると$E$も増加するね。(でも$Y$よりも増加量は少ないよ)
+\begin{equation*}
+|\Delta Y| > |\Delta \overline{G}| \Rightarrow \text{乗数効果}
+\end{equation*}
+
+$\cdot$ 乗数効果
+財市場が以下のようにあらわされていることを仮定するよ
+\begin{displaymath}
+\begin{array}{c}
+\left\{ \begin{matrix}
+	E=\overline{C}+c(Y-\overline{T})+\overline{I}-bi+\overline{G} \\
+	Y=E
+\end{matrix}\right.
+\end{array}
+\end{displaymath}
+上の式を均衡にするには式変形して以下のようにすればいいね。
+\begin{equation*}
+Y=\frac{1}{1-c}\left(\overline{C}-c\overline{T}+\overline{I}-bi+\overline{G}\right)
+\end{equation*}
+ここで$\overline{G}$が$\Delta\overline{G}$だけ変化すると
+\begin{equation*}
+\Delta Y=\frac{1}{1-c}\Delta \overline{G} > \Delta \overline{G}
+\end{equation*}
+この$\displaystyle \frac{1}{1-c}$が$\overline{G}$の乗数効果とよばれているよ。
+
+\subsubsection{税の変動}
+次に$\overline{T}$が増加する場合を考えるよ
+
+\quad $\cdot$ $\overline{T}$が増加すると$E$が減少するね。
+
+\qquad $\cdot$ $E$-曲線が下方向にシフトするよ。
+
+\qquad $\cdot$ 財市場における超過供給
+
+\quad $\Rightarrow Y$ が減少
+\vskip\baselineskip
+\quad $Y$ が減少すると$E$も減少するよ(でも減少量は$Y$より小さいよ)
+\begin{equation*}
+\Delta Y = -\frac{c}{1-c}\Delta \overline{T}
+\end{equation*}
+
+\subsubsection{消費と投資の変動}
+$\overline{C}$ または $\overline{I}$が増加する場合を考えるよ
+
+\quad $\cdot$ $\overline{C}$ または $\overline{I}$が増加すると$E$が増加するね。
+
+\qquad $\cdot$ $E$-曲線は上方向にシフトするね。
+
+\qquad $\cdot$ 財市場における超過供給
+
+\quad $\Rightarrow Y$ の増加
+\vskip\baselineskip
+\quad $Y$が増加すると$E$も増加するよ。(でも$Y$よりも増加量は少ないよ)
+
+アニマルスプリットは自己充足的予言につながる場合があるよ
+\begin{displaymath}
+\begin{array}{c}
+\text{消費者、ビジネスの満足度の増加}\\
+\Downarrow \\
+\text{総生産と総所得が増加}\\
+\text{(計画支出も増加するよ)}\\
+\Downarrow \\
+\text{満足度が上がったのはもしかしたら偶然増えた総所得のせいだったかもしれないよ}
+\end{array}
+\end{displaymath}
+
+\subsubsection{金利の変動}
+最後に$i$の増加について考えるよ
+
+\quad $\cdot$ $i$ が増加すると$E$が減少するよ
+
+\qquad $\cdot$ $E$-c曲線が下方向にシフトするね。
+
+\qquad $\cdot$ 財市場における超過供給
+
+\quad $\Rightarrow Y$ が減少
+\vskip\baselineskip
+\quad $Y$が減少すると$E$も減少(でも減少量は$Y$より小さいよ)
+
+結論
+
+\quad $\cdot$ $i \uparrow \Rightarrow$ 均衡点における生産$Y \downarrow$
+
+\quad $\cdot$ IS-曲線から読み取れるよ
+
+\vskip\baselineskip
+
+IS-曲線
+
+\quad $\cdot$ IS曲線上におけるシフト:
+
+\qquad $\cdot$ $i \uparrow \Rightarrow I \downarrow \Rightarrow$ 財市場における超過供給 $\Rightarrow Y \downarrow$
+
+\quad $\cdot$ IS曲線のシフト
+
+\qquad $\cdot$ $i$が与えられているときの財市場における超過需要:
+
+\qquad \quad $\Rightarrow$ IS曲線の右方向へのシフト (例:拡張的財政政策)
+
+\qquad $\cdot$ $i$が与えられているときの財市場における超過供給
+
+\qquad \quad $\Rightarrow$ IS曲線の左方向へのシフト (例:緊縮的財政政策)
+
+\newpage
+\section{流動性選好モデル}
+\subsection{貨幣市場と債券市場}
+\begin{definition1}{債券}{tag}
+社会的に一定の信用力のある発行体が資金を調達する際の有価証券
+\end{definition1}
+政府は貨幣市場から資金を調達するために政府債券を発行するよ。
+
+\quad $\cdot$ 買い手は政府にお金を払って債券を買うよ
+
+\quad $\cdot$ 買い手はオープンマーケットで債券を売ることができるよ。(例えば中央銀行へ)
+
+\quad $\cdot$ 満期が来たら政府は(利子をつけて)債券の所有者にお金を返すよ。
+\vskip\baselineskip
+\noindent
+額面$F$の政府債券(満期1年)について考えるよ
+
+\quad $\cdot$ 政府は$F$円を次年に返すことを約束して発行するよ
+
+\quad $\cdot$ 現時点での債券の価格 $P_B$ は$F$よりも安いよ(これは当たり前で誰もメリットがないのに政府にお金を貸さないよね)
+\begin{equation*}
+P_B=\frac{F}{1+YTM}
+\end{equation*}
+$YTM$は満期指数みたいなもので満期まで何年かによって入る値が変わるよ。(満期が長ければ長いほど大きくなる。)
+\vskip\baselineskip
+\noindent
+$\Rightarrow$ シンプルに:
+
+\qquad $i=YTM$ が短期政府債券では成り立つとするよ。つまり$P_B \uparrow
+\Leftrightarrow i \downarrow$ and $P_B \downarrow
+\Leftrightarrow i \uparrow$
+\vskip\baselineskip
+\noindent
+キャッシュと要求払預金口座:
+
+\quad $\cdot$ 実政界における強力な代替材(お金があれば大抵の物は買えるため)
+
+\quad $\cdot$ ここでお金は完全な代替財だと仮定するよ
+
+\qquad $\Rightarrow$ さらに要求払預金口座における金利は0(つまり要求払預金口座にお金を預けても増えない)とするよ
+\vskip\baselineskip
+\noindent
+そしてこれ以降$M$としたら$M_1$を指すこととするよ。
+\vskip\baselineskip
+\noindent
+経済主体は$M$をどれくらい持つか、そして金利$i$による利子が見込める普通預金にお金をどれくらい入れるかを自分で決めるよ。(普通に考えて金利が高くなったらお金をもっと普通預金に入れるしその逆もしかりだよ。)
+\subsection{モデル}
+貨幣市場における均衡を理解するために短期のモデルを作るよ。
+
+\quad $\cdot$ 貨幣市場における均衡:
+\begin{equation*}
+\left(\frac{M}{P}\right)^s=\left(\frac{M}{P}\right)^d
+\end{equation*}
+
+\quad $\cdot$ 貨幣市場についてのみ考えるから$\Rightarrow Y$は外生的なものとするよ。
+
+\quad $\cdot$ 短期では$\Rightarrow P$は外生的で$\pi=0$
+
+\vskip\baselineskip
+\noindent
+モデルの仮定:
+
+\qquad $\cdot$ 実質貨幣需要は金利 $i$と総需要に依るものとするよ。
+\begin{equation*}
+\left(\frac{M}{P}\right)^d=\overline{L}+kY-mi \ (k,m>0	)
+\end{equation*}
+
+\qquad \ \ $\overline{L}$ は自立消費(外生的パラメーター、債券市場への期待などが組み込まれている)
+
+\qquad $\cdot$ 実質貨幣供給は名目貨幣供給$\overline{M}$と価格指数$P$に依る:
+\begin{equation*}
+\left(\frac{M}{P}\right)^s=\frac{\overline{M}}{P}
+\end{equation*}
+
+\qquad $\cdot$ 貨幣市場が均衡になるのは
+\begin{equation*}
+\left(\frac{M}{P}\right)^s=\left(\frac{M}{P}\right)^d
+\end{equation*}
+
+\qquad $P,Y, \overline{M}$は外生的だよ。(ここめちゃくちゃ重要)
+
+これより連立方程式が作れて
+\begin{displaymath}
+\left\{
+\begin{array}{c}
+\left(\frac{M}{P}\right)^d=\overline{L}+kY-mi \\
+\left(\frac{M}{P}\right)^s=\left(\frac{M}{P}\right)^d
+\end{array}
+\right.
+\end{displaymath}
+
+$\displaystyle \frac{M}{P}$ は実質貨幣バランスといって一つの変数としてみるよ。
+
+\quad $\Rightarrow$ そして上の連立方程式は以下のように読めるよ。
+\begin{displaymath}
+\left\{
+\begin{array}{c}
+\text{実質貨幣バランス = 実質貨幣供給} \\
+\text{実質貨幣バランス = 実質貨幣需要}
+\end{array}
+\right.
+\end{displaymath}
+
+もし経済が不均衡ならば
+
+\noindent
+$\cdot$ 貨幣市場における超過需要
+
+\begin{displaymath}
+\begin{array}{c}
+\frac{\overline{M}}{P}<\overline{L}+kY-mi \\
+\Downarrow \\
+\text{経済主体が債券を売るから}P_B \text{が減少して} \\
+i \text{が経済が均衡になるまで増加する。}
+\end{array}
+\end{displaymath}
+
+\noindent
+$\cdot$ 貨幣市場における超過供給
+
+\begin{displaymath}
+\begin{array}{c}
+\frac{\overline{M}}{P}>\overline{L}+kY-mi \\
+\Downarrow \\
+\text{経済主体が債券を買うので}P_B \text{が増加して} \\
+i \text{が経済が均衡になるまで減少。}
+\end{array}
+\end{displaymath}
+\subsection{分析}
+経済が今、均衡な状態だと仮定するよ。
+\begin{equation*}
+\frac{\overline{M}}{P}=\overline{L}+kY-mi
+\end{equation*}
+
+\subsubsection{名目貨幣供給量の変化}
+$\overline{M}$が増加すると:
+
+\quad $\cdot$ $\overline{M}$増加するにつれて実質貨幣供給が増加
+
+\qquad $\cdot$ $(M/P)^s$-曲線が右にシフト
+
+\qquad $\cdot$ 貨幣市場における超過供給
+
+\qquad $\Rightarrow$ $i$ が減少
+
+\quad $i$が減少すると実質貨幣需要が増加
+
+\qquad $(M/P)^d$-曲線上で右にシフト。
+
+\subsubsection{価格指数の変化}
+$\overline{P}$ が増加すると:
+
+\quad $\cdot$ $\overline{P}$が増加するにつれて実質貨幣供給が減少
+
+\qquad $\cdot$ $(M/P)^s$-曲線が左にシフト
+
+\qquad $\cdot$ 貨幣市場における超過供給
+
+\qquad $\Rightarrow$ $i$が増加
+
+\quad $i$が増加するにつれて実質貨幣需要が減少
+
+\qquad $(M/P)^d$-曲線上で点が左にシフト。
+
+\subsubsection{自立貨幣需要の変化}
+$\overline{L}$が増加すると:
+
+\quad $\cdot$ $\overline{L}$が増加すると実質貨幣需要が増加
+
+\qquad $\cdot$ $(M/P)^d$-曲線が右方向にシフト
+
+\qquad $\cdot$ 貨幣市場における過剰供給
+
+\qquad $\Rightarrow$ $i$ が減少
+
+\quad $i$ が減少すると実質貨幣需要が増加
+
+\qquad $(M/P)^d$-曲線上で点が右にシフト
+
+\subsubsection{総需要の変化}
+$Y$ が増加すると:
+
+\quad $\cdot$ $Y$が増加すると実質貨幣需要が増加
+
+\qquad $\cdot$ $(M/P)^d$-曲線が右にシフト
+
+\qquad $\cdot$ 貨幣市場における超過需要
+
+\qquad $\Rightarrow$ $i$ が増加
+
+\quad $i$が増加すると実質貨幣需要が減少
+
+\qquad $(M/P)^d$-曲線上で点が左にシフト
+
+結論:
+
+\quad $\cdot$ $Y \uparrow \Rightarrow i \uparrow$
+
+\quad $\cdot$ LM-曲線によって表せられる。
+
+\vskip\baselineskip
+\noindent
+
+LM曲線は:
+
+\quad $\cdot$ LM曲線上のシフト
+
+\qquad $\cdot$ $Y \uparrow \Rightarrow$ 貨幣市場における超過需要
+$\Rightarrow i \uparrow $
+
+\quad $\cdot$ LM曲線のシフト
+
+ \qquad $\cdot$ $Y$が与えられているときに貨幣市場が超過供給
+
+\qquad $\Rightarrow$ LM-曲線が右にシフト (例:拡張的金融政策).
+
+\qquad $\cdot$ $Y$が与えられているときに貨幣市場が超過需要
+
+\qquad $\Rightarrow$ LM-曲線が左にシフト (例:緊縮的金融政策).
+
+\newpage
+\section{IS-LM モデル}
+\subsection{モデル}
+モデルの仮定:
+\begin{displaymath}
+\begin{array}{l}
+\displaystyle C=\overline{C}+c(Y-T) \ \ (0<c<1) \\
+\displaystyle I=\overline{I}-br \ \ (b>0) \\
+\displaystyle G=\overline{G} \\
+\displaystyle T=\overline{T}\\
+\displaystyle \left(\frac{M}{P}\right)^s = \frac{\overline{M}}{P}\\
+\displaystyle \left(\frac{M}{P}\right)^d = \overline{L}+kY-mi \ \ (k,m>0) \\
+\displaystyle \pi=0 \Rightarrow r=i
+\end{array}
+\end{displaymath}
+財市場と貨幣市場は以下の時に均衡だよ。
+\begin{displaymath}
+\left\{\begin{array}{l}
+\displaystyle Y = \overline{C}+c(Y-T)+\overline{I}-br+\overline{G}\\
+\displaystyle \frac{\overline{M}}{P}=\overline{L}+kY-mi
+\end{array}\right.
+\end{displaymath}
+ここで貨幣市場は不均衡ならば財市場よりも早く均衡に戻るよ。
+
+\quad $Y , i$が与えられているときに貨幣市場がすぐに均衡に戻るよ。
+\vskip\baselineskip
+
+中央銀行は以下の方法で経済をコントロールできるよ。
+\quad $\cdot$ 中央銀行が$\overline{M}$を固定する
+
+\quad $\cdot$ 中央銀行が$\overline{M}$をコントロールして $i$を固定する
+
+\quad $\cdot$ 中央銀行が$\overline{M}$をコントロールして$Y$を固定する
+
+\subsection{分析}
+\subsubsection{財政政策}
+\begin{enumerate}
+  \item 中央銀行が$\overline{M}$を固定
+
+  財政政策:
+
+  \quad $\cdot$ IS-曲線が右にシフト
+
+  \quad $\cdot$ 財市場における超過需要
+
+  \quad $\Rightarrow Y \uparrow$
+
+  \vskip\baselineskip
+
+  $Y \uparrow$となると:
+
+  \begin{enumerate}
+    \item 財市場における超過需要が減少
+    \item 実質貨幣需要が増加:
+
+    \qquad $\cdot$ 貨幣市場における超過需要
+
+    \qquad $\cdot$ $i \uparrow$ となって貨幣市場が均衡に戻る
+
+    \qquad $\Rightarrow$ LM-曲線上で点が右にシフト
+\end{enumerate}
+ $i \uparrow$ となるから $I \downarrow$:
+
+	\quad 財市場における超過需要が大きくなる。
+
+\vskip\baselineskip
+
+	\item 中央銀行が$i$を固定する
+
+  財政政策
+
+  \quad $\cdot$ IS-曲線が右にシフト
+
+  \quad $\cdot$ 財市場における超過需要
+  \quad $\Rightarrow Y \uparrow$
+
+  \vskip\baselineskip
+
+  $Y \uparrow$となると:
+
+  \begin{enumerate}
+    \item 財市場の超過需要が減少
+    \item 実質貨幣需要が増加
+
+    \qquad $\cdot$ 貨幣市場における超過需要
+
+    \qquad $\cdot$ $i$が増加するのを防ぐために中央銀行が債券を買う
+    $\Rightarrow$ $\overline{M}\uparrow$
+
+    \qquad $\Rightarrow$ LM-曲線の右方向へのシフト
+    \end{enumerate}
+
+   	\vskip\baselineskip
+
+	\item 中央銀行が$Y$を固定する場合:
+
+  財政政策
+
+  \quad $\cdot$ IS-曲線の右方向へのシフト
+
+  \quad $\cdot$ 財市場における超過需要
+
+  $\cdot$ $Y$の増加を防ぐため中央銀行が債券を買うので $\overline{M}$が減少:
+
+  \quad $\cdot$ $\overline{M} \downarrow$ となり $i \uparrow$
+
+  \quad $\cdot$ LM-曲線の左へのシフト
+
+  $\cdot$ $i \uparrow$に伴い $I \downarrow$:
+
+	\quad 財市場における超過需要が減る
+
+\quad 中央銀行が$i$を固定: クラウディングアウトが起きない
+
+\quad 中央銀行が$Y$を固定: クラウディングアウトが起きる
+\end{enumerate}
+\subsubsection{拡張的金融}
+金融政策
+
+  \quad $\cdot$ LM-曲線の右へのシフト
+
+  \quad $\cdot$ 貨幣市場における超過供給
+
+  $\Rightarrow$ 貨幣市場が均衡になるまで$i \downarrow$
+
+  \noindent
+$i \downarrow$より $I \uparrow$:
+
+  \quad 財市場における超過需要
+
+  \quad $\Rightarrow Y \uparrow$
+
+  \noindent
+$Y \uparrow$より:
+  \begin{enumerate}
+    \item 財市場における超過需要の減少
+    \item 実質貨幣需要の減少
+
+    \qquad $\cdot$ 貨幣市場における超過需要
+
+    \qquad $\cdot$ 貨幣市場が均衡になるように$i \uparrow$
+
+\qquad 新しいLM-曲線上で点が右にシフト
+    \end{enumerate}
+
+
+  \noindent
+  $\cdot$  $i \uparrow$ より$I \downarrow$:
+
+	\quad 財市場における超過需要がもっと減る
+\subsubsection{$P$の増加}
+$P$が増加するとする: (中央銀行は$\overline{M}$を固定)
+
+  \quad $\cdot$ LM-曲線が左にシフト
+
+  \quad $\cdot$ 貨幣市場における超過需要
+
+  $\Rightarrow$ 貨幣市場が均衡になるまで$i \uparrow$
+
+  \noindent
+$i \uparrow$ より $I \downarrow$:
+
+  \quad 財市場における超過需要
+  \quad $\Rightarrow Y \downarrow$
+
+  \noindent
+$Y \downarrow$より:
+  \begin{enumerate}
+    \item 財市場における超過供給が減少
+    \item 実質貨幣需要が減少
+
+    \qquad $\cdot$ 貨幣市場における超過供給
+
+    \qquad $\cdot$ 貨幣市場が均衡になるまで$i \downarrow$
+
+\qquad 新しいLM-曲線上で点が左にシフト
+    \end{enumerate}
+
+
+  \noindent
+  $\cdot$ $i \downarrow$ より $I \uparrow$:
+
+	\quad 財市場における超過供給が増える
+
+\begin{definition1}{総需要}{tag}
+総需要とは財市場と貨幣市場の両方が均衡する総生産の水準のことだよ。
+\end{definition1}
+$\cdot$ $P \uparrow \Rightarrow$ 均衡生産水準 $Y \downarrow$
+
+$\cdot$ これはAD-曲線によって説明されるよ
+
+\subsection{AD-曲線}
+\quad AD-曲線上のシフト
+
+\qquad $\cdot$ $P \uparrow \Rightarrow$ LM-曲線上で左にシフト $\Rightarrow Y
+\downarrow$
+
+\noindent
+\quad AD-曲線のシフト
+
+\qquad $\cdot$ $P$が与えられているときに超過需要
+
+\qquad \ \ $\Rightarrow$ AD-曲線が右にシフト(例:拡張的財政、金融政策)
+
+\qquad $\cdot$ $P$が与えられているときに超過供給
+
+\qquad \ \ $\Rightarrow$ AD-曲線が左にシフト(例:緊縮的財政、金融政策)
+
+\newpage
+
+\section{マンデル-フレミングモデル}
+マンデル-フレミングモデルはIS-LMモデルの小国開放経済バージョンだよ。
+\subsection{モデルの説明}
+財市場において仮定するものはこんな感じだよ
+\begin{displaymath}
+  \left\{\begin{array}{l}
+    \displaystyle C=\overline{C}+c(Y-T) \ \ (0<c<1)\\
+    \displaystyle I=\overline{I}-br \ \ (b > 0)\\
+    \displaystyle NX=\overline{NX}-d\varepsilon \ \ (d > 0) \land \varepsilon = \frac{Pe}{P^*}\\
+    \displaystyle G=\overline{G}\\
+    \displaystyle T=\overline{T}\\
+    \displaystyle r = r^* \ \  r^* \text{は外生的だよ}\\
+    \displaystyle P \text{と} P^* \text{は外生的だよ}\\
+    \displaystyle \pi = 0, \pi^* = 0 \Rightarrow r=i, r^*=i^*
+  \end{array}\right.
+\end{displaymath}
+財市場の均衡条件は以下のように書けるよ。
+\begin{displaymath}
+  \left\{\begin{array}{l}
+    \displaystyle Y=C+I+G+NX \\
+    \displaystyle Y = \overline{C}+c(Y-\overline{T})+\overline{I}-bi^*+\overline{G}+\overline{NX}-\frac{dP}{P^*}e
+  \end{array}\right.
+\end{displaymath}
+グラフで表すとこんな感じになるね。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{ISa.jpg}
+\caption{$IS^*$曲線}
+\label{}
+\end{center}
+\end{figure}
+
+$e \uparrow \Rightarrow NX \downarrow \Rightarrow$財市場での超過需要$\Rightarrow Y\downarrow$っていう関係が$IS^*$曲線上でのシフトで成り立つね。また$e$がすでに与えられているときに超過需要があったら$IS^*$が右にシフト(例えば拡張的財政政策)、超過供給なら$IS^*$曲線は左にシフトするね(緊縮的財政政策)。考え方はIS曲線の時とすごい似てるね。
+
+貨幣市場についてはこんな感じのものを仮定するよ
+
+実質貨幣需要:
+\begin{equation*}
+  \left(\frac{M}{P}\right)^d=\overline{L}+kY-mi \ \ (k,m > 0)
+\end{equation*}
+
+実質貨幣供給:
+\begin{equation*}
+  \left(\frac{M}{P}\right)^s=\frac{\overline{M}}{P}
+\end{equation*}
+
+\begin{displaymath}
+  \begin{array}{l}
+    \displaystyle r = r^* \ \  r^* \text{は外生的だよ}\\
+    \displaystyle P \text{と} P^* \text{は外生的だよ}\\
+    \displaystyle \pi = 0, \pi^* = 0 \Rightarrow r=i, r^*=i^*
+  \end{array}
+\end{displaymath}
+
+貨幣市場の均衡条件は以下のように書けるよ。
+\begin{displaymath}
+  \begin{array}{l}
+    \displaystyle \frac{\overline{M}}{P}=\overline{L}+kY-mi^*
+  \end{array}
+\end{displaymath}
+グラフで表すとこんな感じになるね。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{LMa.jpg}
+\caption{$LM^*$曲線}
+\label{}
+\end{center}
+\end{figure}
+
+$e \uparrow$ or $\downarrow \Rightarrow$貨幣市場には一切影響がないよ。また$Y$がすでに与えられているときに超過需要があったら$LM^*$が左にシフト(例えば緊縮的金融政策)、超過供給なら$LM^*$曲線は右にシフトするね(拡張的金融政策)。貨幣市場は$e$の値によって影響を受けないよ。
+
+この二つのモデルを組み合わせると
+\begin{displaymath}
+  \left\{\begin{array}{l}
+    \displaystyle Y = \overline{C}+c(Y-\overline{T})+\overline{I}-bi^*+\overline{G}+\overline{NX}-\frac{dP}{P^*}e\\
+    \displaystyle \frac{\overline{M}}{P}=\overline{L}+kY-mi^*
+  \end{array}\right.
+\end{displaymath}
+となるね。
+貨幣市場における不均衡は国際的な資本移動を仮定するよ:(僕もよくわからなかったところだから丁寧に説明するね。)
+
+まず貨幣市場で超過需要があると仮定するとGDPと貨幣市場で超過需要があるということは人々が現金を求めてるってことだよ。つまりみんな現金を得るために持っている債権とかを売ることになるね。こうやってみんなが債券を売ると債券の価値が減って債券による利益が上がるから市場金利が上昇するね。そうすると自国の金利は今他国より高いからこれを知った海外の人が自国でお金を預けると(彼らの国より)高い利回りになるから資本が流入するね。(資本の移動コストが自由という仮定を小国開放経済ではおいてるからシンプルに金利が高い国にノーリスクで資本を移動させることができるよ。)もちろんこの人たちは自国のお金に変えなきゃいけないね。そうすると自国の貨幣の価値が高くなるよ。そうすると海外の人たちはお金を交換するのにもっとお金を払わなきゃいけなくなるね。これが自国の金利が海外の金利と一致するまで続くよ。
+超過供給の場合はこれと真逆のこと、つまり自国の貨幣価値が下がるよ。
+
+もう少し掘り下げるよ。なんで$e$が上がり続けると自国の金利が海外の金利と同じになるかを説明するよ。まず$e$が上昇すると$NX$が減るから$Y$が減るね。$Y$が減るということは実質貨幣需要が減るということだよ。実質貨幣の需要が減ると人々は債券を買うよ。ここで$P_B=\frac{F}{1+YTM}$という式を思い出すと、債券を求めるから債券価格が上がる。つまり$YTM$の値が下がるということだよ。この$YTM$は市場金利に単純化することができるから以上から$e$が上がると$i$が減ることがわかったね。
+
+$IS^*$曲線と$LM^*$曲線はこんな感じになるよ
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{ISLMa.jpg}
+\caption{$IS^*-LM^*$曲線}
+\label{}
+\end{center}
+\end{figure}
+
+\subsection{分析}
+ここからは今経済は均衡状態にあるということを仮定して話を進めていくよ。
+\begin{displaymath}
+  \left\{\begin{array}{l}
+    \displaystyle Y = \overline{C}+c(Y-\overline{T})+\overline{I}-bi^*+\overline{G}+\overline{NX}-\frac{dP}{P^*}e\\
+    \displaystyle \frac{\overline{M}}{P}=\overline{L}+kY-mi^*
+  \end{array}\right.
+\end{displaymath}
+まず初めに変動相場と固定相場の違いについてみていくよ。
+
+変動相場っていうのは為替レートが市場の需要と供給によって自然的に決まるような仕組みだよ。先進国は変動相場を採用することが多いよ。固定相場っていうのは国が為替レートを各通貨間で固定している仕組みのことを指すよ。通貨取引量が少ないことから変動相場だとレートの動きが激しくなりがちだから固定相場を採用している国が多いよ。
+\subsubsection{拡張的財政政策(変動相場)}
+まず即座にわかることは$IS^*$曲線が右にシフトするね。これは拡張的財政政策は$\overline{G} \uparrow, \overline{T} \downarrow$よりすぐに従うね。これは財市場において超過需要を引き起こすから結果として$Y \uparrow$が導かれるね。$Y \uparrow$は実質貨幣需要を増やすからそれが貨幣市場における超過需要になって、バランスを保つために$i\uparrow$が導かれるね。でも資本移動コストがかからないっていう仮定から資本流入が起きる、つまり海外通貨の超過供給が起きて$e \uparrow$になるね。自国の貨幣の価値が上がると$NX\downarrow$になるから$Y\downarrow = C+I+G+NX\downarrow$となるし、実質貨幣需要も減ることになるから$i$が減るということになるね。こうするとせっかく$IS^*$曲線が右にシフトしても左にシフトして元の位置に帰ってきちゃうよ。このことから変動相場では財政政策が意味をなさないということがわかるね。
+グラフはこんな感じになるよ。せっかく$IS_2^*$までシフトしても帰ってきちゃうよ。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{fpfloat.jpg}
+\caption{変動相場での拡張的財政政策}
+\label{}
+\end{center}
+\end{figure}
+
+また変動相場での拡張的財政政策は双子の赤字になってしまうことがあるよ。これが長続きするとよくないことが知られているよ。
+\subsubsection{拡張的財政政策(固定相場)}
+まずは変動相場での拡張的財政政策と一緒で$IS^*$曲線が右にシフトするね。これは拡張的財政政策は$\overline{G} \uparrow, \overline{T} \downarrow$よりすぐに従って財市場において超過需要を引き起こすから結果として$Y \uparrow$が導かれるね。次に$Y \uparrow$は実質貨幣需要を増やすからそれが貨幣市場における超過需要になって、バランスを保つために$i\uparrow$が導かれるね。でも資本移動コストがかからないっていう仮定から資本流入が起きる、つまり海外通貨の超過供給が起きて$e \uparrow$になるんだけど$e$が変動することを防ぐために中央銀行が外国為替市場に介入してたくさんの外国通貨を買うよ。これによって$\overline{M}$が増えるから$LM^*$曲線は$i=i*$の条件が満たされるまで右にシフトするよ。これによってGDPが増えるから固定相場においての拡張的財政政策は効果があることが確かめられたよ。
+グラフはこんな感じになるよ。$G\uparrow, T\downarrow$によって$Y$は増えるけど$e$は変化しないよ。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{fpfixed.jpg}
+\caption{固定相場での拡張的財政政策}
+\label{}
+\end{center}
+\end{figure}
+\subsubsection{拡張的金融政策(変動相場)}
+拡張的金融政策だからまず中央銀行が$\overline{M}$の供給量を増やすから貨幣市場で超過供給が起こるね。そうすると$i$が減るから資本が流出して結果自国の通貨の価値が低くなる。つまり$e\downarrow$だね。$e\downarrow$より$NX\uparrow$になるからその結果財市場では超過需要が起きて$Y\uparrow$だね。$Y\uparrow$より実質貨幣の$i=i*$となる点まで上がり続けるよ。
+これによってGDPが増えるから変動相場においての金融政策は効果があることがわかったね。
+グラフを書くとこんな感じになるよ。$IS^*$曲線は$Y$と$e$が変わるだけだから変わらないことに注意しよう。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{mpfloat.jpg}
+\caption{変動相場での拡張的財政政策}
+\label{}
+\end{center}
+\end{figure}
+\subsubsection{拡張的金融政策(固定相場)}
+途中までは変動相場と一緒だよ。中央銀行が$\overline{M}$の供給量を増やすから貨幣市場で超過供給が起こるね。そうすると$i$が減るから資本が流出して結果自国の通貨の価値が低くなる。ここで$e \downarrow$が下がるのを防ぐために中央銀行が大量の自国通貨を外国為替市場で売るよ。$\overline{M}$が$i=i^*$となる位置まで減るから$LM^*$曲線が元の位置に戻っちゃうよ。$e$が変わらないなら$Y$も変わらないから財市場はずっと均衡状態にあるよ。
+以上から固定相場では金融政策が有効ではないことがわかったね。グラフを書くとこんな感じになるよ。
+\begin{figure}[h]
+\begin{center}
+\includegraphics[keepaspectratio, scale=0.15]{mpfixed.jpg}
+\caption{固定相場での拡張的財政政策}
+\label{}
+\end{center}
+\end{figure}
+\subsubsection{価格指数の上昇}
+最後に価格指数が上昇した時のことを考えるよ。$P$が増えると財市場にはおいては$\varepsilon \uparrow$ということがわかるね。($\varepsilon=Pe/P^*$よりすぐに従うことが確かめられるよ)そうすると$NX$は減ることわかってその結果財市場が超過供給になって$IS^*$曲線が左にシフトすることがわかるね。
+
+貨幣市場では$P$が増えると$M/P$が減るから貨幣市場が超過供給になって$LM^*$曲線が左にシフトするよ。
+
+以上から$P$が増えると$Y$が減ることがわかったよ。これは$AD$曲線のふるまいからも従うことが確かめられるね。
+
+\newpage
+
+\section{AD-AS曲線、フィリップス曲線、ルーカス批判}
+\subsection{AD-AS分析}
+AD-AS(Aggregate-Demand-Aggregate-Supply)分析は総需要と総供給の関係によって物価とGDPの関係を説明するモデルだよ。AD-AS曲線には長期と短期の二種類があるよ。初めに長期では以下のようなことを仮定するよ。
+\begin{itemize}
+  \item $Y$は外生的で$Y_n$とするよ。
+  \item $Y_n$は長期にわたって変わらないパラメーターとするよ。
+  \item LRAS(Long-Run-Aggregate-Supply)曲線は以下で定義するものとするよ。
+  \begin{equation*}
+    Y=Y_n
+  \end{equation*}\
+\end{itemize}
+次に短期でのAD曲線について説明するよ。
+\begin{itemize}
+  \item 簡単のため、閉鎖経済を考えるよ。短期の景気変動はIS-LMによって説明されるよ。
+  \item AD-曲線は
+  \begin{equation*}
+    P\uparrow \Rightarrow Y \downarrow
+  \end{equation*}
+\end{itemize}
+\vskip\baselineskip
+次にSRAS曲線についてみていくよ。時刻$t$における価格指数$P_t$はそれ以前に時刻$t$において
+期待されている価格指数$P_t^e$によるよ。
+これは企業は将来の原材料価格や競合他社の価格を見て自社サービスのしばらくの間固定するからだよ。名目賃金も多くの場合、固定されるのでこれによって会社のサービスの値段も変わるよ。
+
+短期的にはビジネスサイクルの段階$Y_t-Y_n$と価格水準$P_t$は相関があるよ。
+\begin{displaymath}
+  \left\{\begin{array}{c}
+    Y_t=Y_n \Leftrightarrow P_t=P_t^e \\
+    Y_t>Y_n \Leftrightarrow P_t>P_t^e \\
+    Y_t<Y_n \Leftrightarrow P_t<P_t^e
+  \end{array}\right.
+\end{displaymath}
+経済は以下の時に均衡状態になるよ
+
+今経済が長期均衡にあって価格指数期待上昇率が安定しているとするよ。つまり、
+\begin{displaymath}
+  \left\{\begin{array}{c}
+    Y_1=Y_n \Leftrightarrow P_1=P_1^e \\
+    P_2^e=P_1
+  \end{array}\right.
+\end{displaymath}
+ここで時刻2において需要拡大が起きることを仮定するよ。
+\begin{displaymath}
+  \begin{array}{c}
+    \text{AD-左にシフト}\Rightarrow \text{財市場における超過需要}\\
+    \Downarrow \\
+    \text{財市場が均衡状態になるまで}Y\uparrow, P\uparrow \\
+    \Rightarrow \text{SRAS曲線上の点が右にシフト}\\
+    \Downarrow \\
+    Y_2>Y_n \Leftrightarrow P_2>P_2^e \\
+    \Downarrow \\
+    P^e \uparrow \Rightarrow \text{SRAS左へのシフト}\\
+    \Downarrow \\
+    \text{時刻}\infty \text{までこのステップが続けられて}Y=Y_n, P^e>P_1
+  \end{array}
+\end{displaymath}
+\newpage
+
+
+\section{付録}
+\subsection{変化率の近似}
+経済ではよく以下のようなことが言えてこれを多用するよ
+\begin{displaymath}
+  \begin{array}{l}
+    Z=XY \Rightarrow \frac{\Delta Z}{Z} \approx \frac{\Delta X}{X}+\frac{\Delta Y}{Y}\\
+    Z=\frac{X}{Y} \Rightarrow \frac{\Delta Z}{Z} \approx \frac{\Delta X}{X}-\frac{\Delta Y}{Y}
+  \end{array}
+\end{displaymath}
+これは $|\frac{\Delta Z}{Z}|,|\frac{\Delta X}{X}|, |\frac{\Delta Y}{Y}|$が十分に小さいことを仮定してるよ。これは以下のように示せるよ。
+\begin{displaymath}
+  \begin{array}{l}
+    Z=XY \Rightarrow Z+\Delta Z =(X+\Delta X)(Y+\Delta Y)=XY+X\Delta Y+Y\Delta X+\Delta X\Delta Y \\
+    \Rightarrow 1+\frac{\Delta Z}{Z}=1+\frac{\Delta X}{X}\frac{\Delta Y}{Y} \approx \frac{\Delta X}{X}+\frac{\Delta Y}{Y}\\
+    Z=\frac{X}{Y} \Rightarrow Z+\Delta Z =\frac{X+\Delta X}{Y+\Delta Y}=Z\frac{1+\frac{\Delta X}{X}}{1+\frac{\Delta Y}{Y}}=Z\left(1+\frac{\Delta X}{X}\right)\left(1-\frac{\Delta Y}{Y}+O\left(\left(\frac{\Delta Y}{Y}\right)^2\right)\right) \\
+    \approx Z\left(1+\frac{\Delta X}{X}-\frac{\Delta Y}{Y}\right) \Leftrightarrow \frac{\Delta Z}{Z} \approx \frac{\Delta X}{X}-\frac{\Delta Y}{Y}
+  \end{array}
+\end{displaymath}
+ランダウの$O$記号を使っているところは$\frac{1}{1+x}$をマクローリン展開したよ。
 \end{document}
